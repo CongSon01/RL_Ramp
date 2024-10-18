@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<additional xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/additional_file.xsd">
+    <!-- Detectors -->
+    <inductionLoop id="det_0" lane="Ramp_afterTL_0" pos="-5" period="100.00" file="det.out.xml"/>
+    <inductionLoop id="det_1" lane="HW_beforeRamp_1" pos="-1" period="100.00" file="det.out.xml"/>
+    <inductionLoop id="det_2" lane="HW_beforeRamp_0" pos="-1" period="100.00" file="det.out.xml"/>
+</additional>

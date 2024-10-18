@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/routes_file.xsd">
+  
+     <!-- VTypes -->
+    <vType id="car"  probability="0.9"/>
+    <vType id="truck" vClass="truck" maxSpeed="27.77"  probability="0.1"/>
+    <vTypeDistribution id="car_truck" vTypes="car truck"/>
+
+    <!-- Routes -->
+    <route id="r_Highway" edges="E0 HW_beforeRamp HW_Ramp HW_afterRamp"/>
+    <route id="r_Ramp" edges="E1 Ramp_beforeTL Ramp_afterTL HW_Ramp HW_afterRamp"/>
+ 
+    <!-- Flows -->
+    <!-- <flow id="f_Highway" begin="0.00" route="r_Highway" end="3600.00" departLane="free" departPos="free" departSpeed="speedLimit" vehsPerHour="10000" type="car_truck"/>
+    <flow id="r_Ramp" begin="0.00" route="r_Ramp" end="3600.00" departPos="free" departSpeed="speedLimit" vehsPerHour="3300" type="car_truck"/> -->
+
+</routes>

@@ -233,31 +233,6 @@ class SumoDQNAgent:
             decay_rate = (self.eps_start - self.eps_min) / self.epochs  # Acceptance rate per epoch
             x = max(self.eps_min, self.eps_start - decay_rate * current_epoch)
             return x
-        
-    def testModel(self, model, gui=True, useModel=True):
-        if gui:
-            self.env.close()
-            self.env = SumoEnv(gui=True, flow_on_HW = self.flow_on_HW, flow_on_Ramp = self.flow_on_Ramp) 
-        self.reset()
-        state1 = self.obs()
-        isDone = False
-        mov = 0
-        while not isDone:
-            mov += 1
-            if useModel:
-                qval = self.model(state1)
-                qval = model(state1)
-                qval_ = qval.data.numpy()
-                action_ = np.argmax(qval_)
-            else:
-                action_ = 0
-            self.step(action_)
-            state1 = self.obs()
-            if mov > self.max_steps:
-                isDone = True
-
-        self.env.close()
-        return self.env.getStatistics() 
 
     # Function for linear interpolation of the flow data
     def interpolate_flow(self, step, data_points):
@@ -276,5 +251,5 @@ if __name__ == "__main__":
     agent = SumoDQNAgent(action_space_n=2, observation_space_n=3012) # 3012 = 3*1004 (3 matrices with 1004 values each (4*251)
 
     model, total_step_loss, total_step_rewards, epochs, steps, simulationStepLength, mu, omega, tau, epochs, batch_size, max_steps, learning_rate, gamma, eps_start, eps_min, eps_dec_factor, eps_dec_exp, sync_freq, mem_size = agent.train()
-    model.save("bodel.bin")
+    model.save("DynamicModel.pth")
 

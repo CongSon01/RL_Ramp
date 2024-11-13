@@ -6,7 +6,7 @@ import random
 from collections import deque
 import copy
 import os
-import sys
+import pickle
 
 from maps.SumoEnv import SumoEnv 
 
@@ -59,15 +59,18 @@ class SumoDQNAgent:
         self.data_points = [(t * 60, hw, ramp) for t, hw, ramp in self.data_points]
 
         ### Set the simulation parameters ###
-        self.simulationStepLength = 2 # 2 seconds per simulation step (time that elapses in the simulation per DQN step)
+        # self.simulationStepLength = 2 # 2 seconds per simulation step (time that elapses in the simulation per DQN step)
+        self.simulationStepLength = 60
         self.mu = 0.05 # Reward weighting for the speed on the HW
         self.omega = -0.5 # Reward weighting for the traffic light queue length
         self.tau = 0.2 # Reward weighting for the speed on the ramp
 
         ### Set hyperparameters ###
-        self.epochs = 70
+        self.epochs = 5
         self.batch_size = 32
         self.max_steps = 3600 / self.simulationStepLength # 1 hour traffic simulation
+        # self.max_steps = 1800 / self.simulationStepLength # 1 hour traffic simulation
+        # self.max_steps = 900 / self.simulationStepLength # 1 hour traffic simulation
 
         self.learning_rate = 5e-5
         self.gamma = 0.99
@@ -226,6 +229,31 @@ class SumoDQNAgent:
         print( total_steps)
         return self.model, np.array(total_step_loss), np.array(total_step_rewards), self.epochs, total_steps, self.simulationStepLength, self.mu, self.omega, self.tau, self.epochs, self.batch_size, self.max_steps, self.learning_rate, self.gamma, self.eps_start, self.eps_min, self.eps_decay_factor, self.eps_dec_exp, self.sync_freq, self.mem_size
     
+    def testModel(self, model, gui=True, useModel=True):
+        if gui:
+            self.env.close()
+            self.env = SumoEnv(gui=True, flow_on_HW = self.flow_on_HW, flow_on_Ramp = self.flow_on_Ramp) 
+        self.reset()
+        state1 = self.obs()
+        isDone = False
+        mov = 0
+        while not isDone:
+            mov += 1
+            if useModel:
+                qval = self.model(state1)
+                qval = model(state1)
+                qval_ = qval.data.numpy()
+                action_ = np.argmax(qval_)
+            else:
+                action_ = 0
+            self.step(action_)
+            state1 = self.obs()
+            if mov > self.max_steps:
+                isDone = True
+
+        self.env.close()
+        return self.env.getStatistics() 
+    
     def update_epsilon(self, current_epoch):
         if self.eps_dec_exp:
             # Exponential decrease
@@ -250,8 +278,15 @@ class SumoDQNAgent:
 
 # this is the main entry point of this script
 if __name__ == "__main__":
-    agent = SumoDQNAgent(action_space_n=2, observation_space_n=3012) # 3012 = 3*1004 (3 matrices with 1004 values each (4*251) 250 is the x * y + 1 is value of traffic light 
+    agent = SumoDQNAgent(action_space_n=1, observation_space_n=3012) # 3012 = 3*1004 (3 matrices with 1004 values each (4*251) 250 is the x * y + 1 is value of traffic light 
 
     model, total_step_loss, total_step_rewards, epochs, steps, simulationStepLength, mu, omega, tau, epochs, batch_size, max_steps, learning_rate, gamma, eps_start, eps_min, eps_dec_factor, eps_dec_exp, sync_freq, mem_size = agent.train()
-    model.save("DynamicModel1.pth")
+
+    # Creating a dictionary to save all results 
+    results = { "agent": agent, "model": model, "total_step_loss": total_step_loss, "total_step_rewards": total_step_rewards, "epochs": epochs, "steps": steps, "simulationStepLength": simulationStepLength, "mu": mu, "omega": omega, "tau": tau, "batch_size": batch_size, "max_steps": max_steps, "learning_rate": learning_rate, "gamma": gamma, "eps_start": eps_start, "eps_min": eps_min, "eps_dec_factor": eps_dec_factor, "eps_dec_exp": eps_dec_exp, "sync_freq": sync_freq, "mem_size": mem_size } 
+    # Saving the results to a file 
+    with open('training_results.pkl', 'wb') as file: 
+        pickle.dump(results, file) 
+        print("Training results saved successfully.")
+    torch.save(model, 'Models/DynamicModel1.pth')
 

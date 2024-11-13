@@ -59,13 +59,24 @@ class SumoEnv:
         self.partial_vehicle_accumulator_Ramp = 0
         # Starts a new SUMO session
         traci.start(self.sumoCmd)  
-
+            
     def doSimulationStep(self, phase_index):
         # Set the phase of the traffic light
-        traci.trafficlight.setPhase("JRTL1", phase_index)
-        self.trafficLightPhases.append(phase_index)
+        if phase_index < 0.5:
+            # Set red light, proportional duration
+            red_duration = int(phase_index * 2 * 60)
+            traci.trafficlight.setPhaseDuration("JRTL1", red_duration)
+            traci.trafficlight.setPhase("JRTL1", 1)  # Red phase
+            self.trafficLightPhases.append(1)
+        else:
+            # Set green light, proportional duration
+            green_duration = int((phase_index - 0.5) * 2 * 60)
+            traci.trafficlight.setPhaseDuration("JRTL1", green_duration)
+            traci.trafficlight.setPhase("JRTL1", 0)  # Green phase
+            self.trafficLightPhases.append(0)
 
         # Generate vehicle flows
+        # print("Add the vehile")
         self.partial_vehicle_accumulator_HW = self.generateVehicles("r_Highway", "car_truck", self.flow_on_HW, self.step, self.partial_vehicle_accumulator_HW) # Highway
         self.partial_vehicle_accumulator_Ramp = self.generateVehicles("r_Ramp", "car_truck", self.flow_on_Ramp, self.step, self.partial_vehicle_accumulator_Ramp) # Ramp
 
@@ -240,40 +251,22 @@ class SumoEnv:
     def getNumberVehicleWaitingTL(self):
         return traci.edge.getLastStepHaltingNumber("Ramp_beforeTL")
     
-    # without taking into account the length of the vehicles
-    def getStateMatrix(self):
-        # Read out length and number of lanes
-        laneLength = traci.lane.getLength("HW_Ramp_0")
-        laneNumber = traci.edge.getLaneNumber("HW_Ramp")
+    def getTrafficLightDurationProportion(self):
+        current_phase = traci.trafficlight.getPhase("JRTL1")  # 0 for green, 1 for red
+        remaining_duration = traci.trafficlight.getNextSwitch("JRTL1") - traci.simulation.getTime()
+        max_duration = 60  # The set duration for each light phase in your configuration
 
-        # Create an array stateMatrix with zeros
-        stateMatrix = [[0 for _ in range(int(laneLength) + 1)] for _ in range(int(laneNumber) + 1)]
-
-        # Reading out the vehicles on the road
-        vehicleList = traci.edge.getLastStepVehicleIDs("HW_Ramp")
-        for vehID in vehicleList:
-            
-            lanePosition = traci.vehicle.getLanePosition(vehID)
-            # Splitting the string at the underscores and converting the last element into an integer
-            lane = int(traci.vehicle.getLaneID(vehID).split('_')[-1])
-            # Set the 1 at the corresponding position in the stateMatrix
-            stateMatrix[lane][int(lanePosition)] = 1
-
-        numberOfVehicleWaitingTF = traci.edge.getLastStepHaltingNumber("Ramp_beforeTL")
-
-        for i in range(numberOfVehicleWaitingTF):
-            if i < 250:  
-                 stateMatrix[3][249-i] = 1
-                
-        stateMatrix[3][250] = traci.trafficlight.getPhase("JRTL1")
-
-        return stateMatrix
+        if current_phase == 1:  # Red phase
+            return remaining_duration / (2 * max_duration)
+        else:  # Green phase
+            return 0.5 + (remaining_duration / (2 * max_duration))
     
     # taking into account the length of the vehicles
     def getStateMatrixV2(self):
         # Read out length and number of lanes
         laneLength = traci.lane.getLength("HW_Ramp_0")
         laneNumber = traci.edge.getLaneNumber("HW_Ramp")
+        maxSpeed = 80
 
         # Create an array stateMatrix with zeros
         stateMatrix = [[0 for _ in range(int(laneLength) + 1)] for _ in range(int(laneNumber) + 1)]
@@ -284,23 +277,30 @@ class SumoEnv:
             
             lanePosition = traci.vehicle.getLanePosition(vehID)
             vehicleLength = traci.vehicle.getLength(vehID)
+            vehicleSpeed = traci.vehicle.getSpeed(vehID)
             # Splitting the string at the underscores and converting the last element into an integer
             lane = int(traci.vehicle.getLaneID(vehID).split('_')[-1])
 
             # Set the 1 at the corresponding position in the stateMatrix
             for i in range(int(vehicleLength)):
                 if int(lanePosition) - i >= 0:
-                    stateMatrix[lane][int(lanePosition) - i] = 1
+                    if vehicleSpeed == 0:
+                        stateMatrix[lane][int(lanePosition) - i] = 0.001
+                    else:
+                        stateMatrix[lane][int(lanePosition) - i] = vehicleSpeed / maxSpeed
                 else:
                     break
 
         numberOfVehicleWaitingTF = traci.edge.getLastStepHaltingNumber("Ramp_beforeTL")
 
+        # State of the ramp
         for i in range(numberOfVehicleWaitingTF):
             if i < 250:  
-                 stateMatrix[3][249-i] = 1
+                stateMatrix[3][249-i] = 1
                 
-        stateMatrix[3][250] = traci.trafficlight.getPhase("JRTL1")
+        # state of traffic light
+        # stateMatrix[3][250] = traci.trafficlight.getPhase("JRTL1")
+        stateMatrix[3][250] = self.getTrafficLightDurationProportion()
 
         return stateMatrix
 

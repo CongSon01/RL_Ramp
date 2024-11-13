@@ -100,6 +100,7 @@ class SumoDQNAgent:
             nn.Linear(l4, l5),
             nn.ReLU(),
             nn.Linear(l5, l6)
+            # [0.4, 0.6]
         )
         return model
 
@@ -107,6 +108,7 @@ class SumoDQNAgent:
     def obs(self):
         # Get the state matrix
         state_matrix = self.env.getStateMatrixV2()
+        # breakpoint()
 
         # Add the state matrix to the queue
         self.state_matrices.appendleft(state_matrix)
@@ -147,11 +149,11 @@ class SumoDQNAgent:
     def step(self, action):
         # Execute the action in the surrounding area
         for _ in range(self.simulationStepLength):
-
             ### Optional: Dynamically adjust the flow ###
             self.env.setFlowOnHW(self.interpolate_flow(self.env.getCurrentStep(), self.data_points)[0])
             self.env.setFlowOnRamp(self.interpolate_flow(self.env.getCurrentStep(), self.data_points)[1])
-            self.env.doSimulationStep(action)
+
+            self.env.doSimulationStep(action)  # action is continuous value
 
             ### Optional: Calculation of rewards over several simulation steps ###
             #self.simStepReward = self.mu * self.env.getSpeedHW() + self.omega * self.env.getNumberVehicleWaitingTL()
@@ -248,8 +250,8 @@ class SumoDQNAgent:
 
 # this is the main entry point of this script
 if __name__ == "__main__":
-    agent = SumoDQNAgent(action_space_n=2, observation_space_n=3012) # 3012 = 3*1004 (3 matrices with 1004 values each (4*251)
+    agent = SumoDQNAgent(action_space_n=2, observation_space_n=3012) # 3012 = 3*1004 (3 matrices with 1004 values each (4*251) 250 is the x * y + 1 is value of traffic light 
 
     model, total_step_loss, total_step_rewards, epochs, steps, simulationStepLength, mu, omega, tau, epochs, batch_size, max_steps, learning_rate, gamma, eps_start, eps_min, eps_dec_factor, eps_dec_exp, sync_freq, mem_size = agent.train()
-    model.save("DynamicModel.pth")
+    model.save("DynamicModel1.pth")
 

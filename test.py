@@ -4,7 +4,7 @@ import numpy as np
 from collections import deque
 
 # Erstellen Sie eine Instanz der Umgebung
-flow_on_HW=5000
+flow_on_HW = 5000
 flow_on_Ramp= 2000
 simulationStepLength = 2 # 2 seconds per simulation step (time that elapses in the simulation per DQN step)
 max_steps = 3600 / simulationStepLength # 1 hour traffic simulation

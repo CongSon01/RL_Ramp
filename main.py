@@ -66,7 +66,7 @@ class SumoDQNAgent:
         self.tau = 0.2 # Reward weighting for the speed on the ramp
 
         ### Set hyperparameters ###
-        self.epochs = 15
+        self.epochs = 5
         self.batch_size = 32
         self.max_steps = 3600 / self.simulationStepLength # 1 hour traffic simulation
         # self.max_steps = 1800 / self.simulationStepLength # 1 hour traffic simulation

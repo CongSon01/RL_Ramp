@@ -43,7 +43,7 @@ class SumoDQNAgent:
 
         # Simulation and training parameters
         self.simulationStepLength = 60
-        self.mu, self.omega, self.tau = 0.05, -0.6, 0.2
+        self.mu, self.omega, self.tau = 0.05, -1, 0.2
         self.epochs, self.batch_size = 20, 32
         self.max_steps = 3600 / self.simulationStepLength
         self.learning_rate, self.gamma = 5e-5, 0.99
@@ -145,7 +145,7 @@ class SumoDQNAgent:
                 if done or mov >= self.max_steps:
                     isDone = True
             
-        return self.model, np.array(total_step_loss), np.array(total_step_rewards), total_steps
+        return self.model, np.array(total_step_loss), np.array(total_step_rewards), self.epochs, total_steps, self.simulationStepLength, self.mu, self.omega, self.tau, self.epochs, self.batch_size, self.max_steps, self.learning_rate, self.gamma, self.eps_start, self.eps_min, self.eps_decay_factor, self.eps_dec_exp, self.sync_freq, self.mem_size
 
     def update_epsilon(self, current_epoch):
         if self.eps_dec_exp:

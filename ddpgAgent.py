@@ -6,7 +6,7 @@ import random
 from collections import deque
 import copy
 import pickle
-from maps.SumoEnv import SumoEnv 
+from maps.SumoEnv import SumoEnv
 
 class ActorNetwork(nn.Module):
     def __init__(self, input_dim, output_dim):
@@ -28,7 +28,7 @@ class CriticNetwork(nn.Module):
             nn.Linear(state_dim + action_dim, 128), nn.ReLU(),
             nn.Linear(128, 64), nn.ReLU(),
             nn.Linear(64, 32), nn.ReLU(),
-            nn.Linear(32, 1)  # Output Q-value
+            nn.Linear(32, 1)  # Output Q-value as a single value
         )
 
     def forward(self, state, action):
@@ -67,7 +67,7 @@ class DDPGAgent:
         self.max_steps = 3600 // 60
         self.exploration_noise = 0.1
         self.memory = deque(maxlen=50000)
-        self.epochs = 5
+        self.epochs = 15
 
         # Actor and Critic networks
         self.actor = ActorNetwork(state_dim, action_dim).to(device)
@@ -87,7 +87,7 @@ class DDPGAgent:
         return torch.from_numpy(flat_state_array).float()
 
     def rew(self):
-        return 0.05 * self.env.getSpeedHW() - 0.5 * self.env.getNumberVehicleWaitingTL() + 0.2 * self.env.getSpeedRamp()
+       return 0.05 * self.env.getSpeedHW() - 0.5 * self.env.getNumberVehicleWaitingTL() + 0.2 * self.env.getSpeedRamp()
 
     def step(self, action):
         for _ in range(60):
@@ -160,10 +160,10 @@ class DDPGAgent:
         with torch.no_grad():
             target_actions = self.target_actor(next_states)
             target_q_values = self.target_critic(next_states, target_actions)
-            y = rewards + self.gamma * target_q_values * (1 - dones)
+            y = rewards.view(-1, 1) + self.gamma * target_q_values * (1 - dones.view(-1, 1))
 
         critic_q_values = self.critic(states, actions)
-        critic_loss = self.loss_fn(critic_q_values, y.detach())
+        critic_loss = self.loss_fn(critic_q_values, y)
         self.critic_optimizer.zero_grad()
         critic_loss.backward()
         self.critic_optimizer.step()

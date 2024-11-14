@@ -23,7 +23,7 @@ data_points = [
 # Conversion of time from minutes to steps (assumes 1 step = 1 second)
 
 data_points = [(t * 60, hw, ramp) for t, hw, ramp in data_points]
-model = torch.load('models/DynamicModel.pth')
+model = torch.load('models/DynamicModel2.pth')
 
 env = SumoEnv(gui=True, flow_on_HW = flow_on_HW, flow_on_Ramp = flow_on_Ramp) 
 

@@ -63,17 +63,18 @@ class SumoEnv:
     def doSimulationStep(self, phase_index):
         # Set the phase of the traffic light
         if phase_index < 0.5:
-            # Set red light, proportional duration
-            red_duration = int(phase_index * 2 * 60)
-            traci.trafficlight.setPhaseDuration("JRTL1", red_duration)
-            traci.trafficlight.setPhase("JRTL1", 1)  # Red phase
-            self.trafficLightPhases.append(1)
-        else:
             # Set green light, proportional duration
-            green_duration = int((phase_index - 0.5) * 2 * 60)
+            green_duration = int(phase_index * 2 * 60)
             traci.trafficlight.setPhaseDuration("JRTL1", green_duration)
             traci.trafficlight.setPhase("JRTL1", 0)  # Green phase
             self.trafficLightPhases.append(0)
+        else:
+            # Set red light, proportional duration
+            red_duration = int((phase_index - 0.5) * 2 * 60)
+            traci.trafficlight.setPhaseDuration("JRTL1", red_duration)
+            traci.trafficlight.setPhase("JRTL1", 1)  # Red phase
+            self.trafficLightPhases.append(1)
+
 
         # Generate vehicle flows
         # print("Add the vehile")

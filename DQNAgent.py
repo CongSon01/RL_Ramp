@@ -43,8 +43,8 @@ class SumoDQNAgent:
 
         # Simulation and training parameters
         self.simulationStepLength = 60
-        self.mu, self.omega, self.tau = 0.05, -0.5, 0.2
-        self.epochs, self.batch_size = 5, 32
+        self.mu, self.omega, self.tau = 0.05, -0.6, 0.2
+        self.epochs, self.batch_size = 20, 32
         self.max_steps = 3600 / self.simulationStepLength
         self.learning_rate, self.gamma = 5e-5, 0.99
         self.eps_start, self.eps_min = 0.8, 0.05

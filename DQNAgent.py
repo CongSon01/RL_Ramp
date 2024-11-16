@@ -8,7 +8,7 @@ import copy
 import pickle
 from maps.SumoEnv import SumoEnv 
 
-class SumoDQNAgent:
+class DqnAgent:
     def __init__(self, observation_space_n):
         self.observation_space_n = observation_space_n
 
@@ -43,8 +43,8 @@ class SumoDQNAgent:
 
         # Simulation and training parameters
         self.simulationStepLength = 60
-        self.mu, self.omega, self.tau = 0.05, -1, 0.2
-        self.epochs, self.batch_size = 20, 32
+        self.mu, self.omega, self.tau = 0.05, -0.6, 0.2
+        self.epochs, self.batch_size = 50, 32
         self.max_steps = 3600 / self.simulationStepLength
         self.learning_rate, self.gamma = 5e-5, 0.99
         self.eps_start, self.eps_min = 0.8, 0.05
@@ -147,6 +147,34 @@ class SumoDQNAgent:
             
         return self.model, np.array(total_step_loss), np.array(total_step_rewards), self.epochs, total_steps, self.simulationStepLength, self.mu, self.omega, self.tau, self.epochs, self.batch_size, self.max_steps, self.learning_rate, self.gamma, self.eps_start, self.eps_min, self.eps_decay_factor, self.eps_dec_exp, self.sync_freq, self.mem_size
 
+
+
+    def testModel(self, model, gui=True, useModel=True):
+        if gui:
+            self.env.close()
+            self.env = SumoEnv(gui=True, flow_on_HW = self.flow_on_HW, flow_on_Ramp = self.flow_on_Ramp) 
+        self.reset()
+        state1 = self.obs()
+        isDone = False
+        mov = 0
+        while not isDone:
+            mov += 1
+            if useModel:
+                qval = self.model(state1)
+                qval = model(state1)
+                qval_ = qval.data.numpy()
+                action_ = np.argmax(qval_)
+            else:
+                action_ = 0
+            self.step(action_)
+            state1 = self.obs()
+            if mov > self.max_steps:
+                isDone = True
+
+        self.env.close()
+        return self.env.getStatistics() 
+
+
     def update_epsilon(self, current_epoch):
         if self.eps_dec_exp:
             return self.eps_min + (self.eps_start - self.eps_min) * np.exp(-self.eps_decay_factor * current_epoch)
@@ -162,12 +190,12 @@ class SumoDQNAgent:
 
 # Main script
 if __name__ == "__main__":
-    agent = SumoDQNAgent(observation_space_n=3012)
-    model, total_step_loss, total_step_rewards, steps = agent.train()
+    agent = DqnAgent(observation_space_n=3012)
+    model, total_step_loss, total_step_rewards, epochs, steps, simulationStepLength, mu, omega, tau, epochs, batch_size, max_steps, learning_rate, gamma, eps_start, eps_min, eps_dec_factor, eps_dec_exp, sync_freq, mem_size = agent.train()
 
     # Save training results and model
-    results = {"model": model, "total_step_loss": total_step_loss, "total_step_rewards": total_step_rewards, "steps": steps}
-    with open('training_results.pkl', 'wb') as file:
+    results = { "agent": agent, "model": model, "total_step_loss": total_step_loss, "total_step_rewards": total_step_rewards, "epochs": epochs, "steps": steps, "simulationStepLength": simulationStepLength, "mu": mu, "omega": omega, "tau": tau, "batch_size": batch_size, "max_steps": max_steps, "learning_rate": learning_rate, "gamma": gamma, "eps_start": eps_start, "eps_min": eps_min, "eps_dec_factor": eps_dec_factor, "eps_dec_exp": eps_dec_exp, "sync_freq": sync_freq, "mem_size": mem_size } 
+    with open('training_results_1.pkl', 'wb') as file:
         pickle.dump(results, file)
         print("Training results saved successfully.")
     torch.save(model, 'Models/DynamicModel2.pth')

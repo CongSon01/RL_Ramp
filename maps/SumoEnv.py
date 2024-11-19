@@ -267,7 +267,7 @@ class SumoEnv:
         # Read out length and number of lanes
         laneLength = traci.lane.getLength("HW_Ramp_0")
         laneNumber = traci.edge.getLaneNumber("HW_Ramp")
-        maxSpeed = 80
+        #maxSpeed = 80  # Max speed for normalization
 
         # Create an array stateMatrix with zeros
         stateMatrix = [[0 for _ in range(int(laneLength) + 1)] for _ in range(int(laneNumber) + 1)]
@@ -275,32 +275,43 @@ class SumoEnv:
         # Reading out the vehicles on the road
         vehicleList = traci.edge.getLastStepVehicleIDs("HW_Ramp")
         for vehID in vehicleList:
-            
             lanePosition = traci.vehicle.getLanePosition(vehID)
             vehicleLength = traci.vehicle.getLength(vehID)
             vehicleSpeed = traci.vehicle.getSpeed(vehID)
-            # Splitting the string at the underscores and converting the last element into an integer
-            lane = int(traci.vehicle.getLaneID(vehID).split('_')[-1])
-
-            # Set the 1 at the corresponding position in the stateMatrix
+            lane = int(traci.vehicle.getLaneID(vehID).split('_')[-1])  # Get the lane number
+            lane_max_speed = traci.lane.getMaxSpeed(traci.vehicle.getLaneID(vehID))
+            # Set the speed at the corresponding position in the stateMatrix
             for i in range(int(vehicleLength)):
                 if int(lanePosition) - i >= 0:
                     if vehicleSpeed == 0:
-                        stateMatrix[lane][int(lanePosition) - i] = 0.001
+                        stateMatrix[lane][int(lanePosition) - i] = 0.001  # Minimal value for stopped vehicles
                     else:
-                        stateMatrix[lane][int(lanePosition) - i] = vehicleSpeed / maxSpeed
+                       stateMatrix[lane][int(lanePosition) - i] = vehicleSpeed / 48  # Normalize speed
+                
                 else:
                     break
 
-        numberOfVehicleWaitingTF = traci.edge.getLastStepHaltingNumber("Ramp_beforeTL")
+        # Reading out vehicles on the ramp before the traffic light
+        rampVehicleList = traci.edge.getLastStepVehicleIDs("Ramp_beforeTL")
+        for vehID in rampVehicleList:
+            rampLanePosition = traci.vehicle.getLanePosition(vehID)
+            rampVehicleLength = traci.vehicle.getLength(vehID)
+            rampVehicleSpeed = traci.vehicle.getSpeed(vehID)
+            lane_max_speed = traci.lane.getMaxSpeed(traci.vehicle.getLaneID(vehID))
+            
+            # Assume ramp corresponds to lane index 3 (adjust if necessary)
+            ramp_lane = 3
+            for i in range(int(rampVehicleLength)):
+                if int(rampLanePosition) - i >= 0:
+                    if rampVehicleSpeed == 0:
+                        stateMatrix[ramp_lane][int(rampLanePosition) - i] = 0.001  # Minimal value for stopped vehicles
+                    else:
+                        stateMatrix[ramp_lane][int(rampLanePosition) - i] = rampVehicleSpeed / 48  # Normalize speed
+                       
+                else:
+                    break
 
-        # State of the ramp
-        for i in range(numberOfVehicleWaitingTF):
-            if i < 250:  
-                stateMatrix[3][249-i] = 1
-                
-        # state of traffic light
-        # stateMatrix[3][250] = traci.trafficlight.getPhase("JRTL1")
+        # State of traffic light
         stateMatrix[3][250] = self.getTrafficLightDurationProportion()
 
         return stateMatrix

@@ -44,7 +44,7 @@ class DqnAgent:
         # Simulation and training parameters
         self.simulationStepLength = 60
         self.mu, self.omega, self.tau = 0.05, -0.6, 0.2
-        self.epochs, self.batch_size = 50, 32
+        self.epochs, self.batch_size = 20, 32
         self.max_steps = 3600 / self.simulationStepLength
         self.learning_rate, self.gamma = 5e-5, 0.99
         self.eps_start, self.eps_min = 0.8, 0.05
@@ -111,7 +111,9 @@ class DqnAgent:
                 self.step(action_)
                 state2 = self.obs()
                 reward = self.rew()
+                print(f"____________________reward___________________: {reward}")
                 total_step_rewards.append(reward)
+
                 done = False
                 exp = (state1, action_, reward, state2, done)
                 self.replay.append(exp)
@@ -135,6 +137,7 @@ class DqnAgent:
 
                     self.optimizer.zero_grad()
                     loss.backward()
+                    print(f"____________________loss___________________: {loss.item()}")
                     total_step_loss.append(loss.item())
                     update_count += 1
                     self.optimizer.step()

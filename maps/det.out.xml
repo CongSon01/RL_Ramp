@@ -1,16 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- generated on 2024-11-16 15:20:51 by Eclipse SUMO sumo Version v1_21_0+0042-f4879189807
-<sumoConfiguration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/sumoConfiguration.xsd">
+<!-- generated on 2024-12-22 09:06:19 by Eclipse SUMO GUI Version 1.20.0
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/sumoConfiguration.xsd">
 
     <input>
-        <net-file value="/Users/macos/Documents/M2SIA/RL/Project_2.0/RL_Ramp/maps/HRC.net.xml"/>
-        <route-files value="/Users/macos/Documents/M2SIA/RL/Project_2.0/RL_Ramp/maps/HRC.rou.xml"/>
-        <additional-files value="/Users/macos/Documents/M2SIA/RL/Project_2.0/RL_Ramp/maps/HRC.add.xml"/>
+        <net-file value="E:\WorkSpace\StudyAdroad\Gustave-eiffel course\RL course\Dynamic-Traffic-light-management-system-main\HWRamp\maps\HRC.net.xml"/>
+        <route-files value="E:\WorkSpace\StudyAdroad\Gustave-eiffel course\RL course\Dynamic-Traffic-light-management-system-main\HWRamp\maps\HRC.rou.xml"/>
+        <additional-files value="E:\WorkSpace\StudyAdroad\Gustave-eiffel course\RL course\Dynamic-Traffic-light-management-system-main\HWRamp\maps\HRC.add.xml"/>
     </input>
 
     <traci_server>
-        <remote-port value="51681"/>
+        <remote-port value="51052"/>
     </traci_server>
 
-</sumoConfiguration>
+</configuration>
+-->
+
+<detector xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/det_e1_file.xsd">
+</detector>

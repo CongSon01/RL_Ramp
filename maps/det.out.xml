@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<<<<<<< HEAD
 <!-- generated on 2024-12-22 09:06:19 by Eclipse SUMO GUI Version 1.20.0
 <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/sumoConfiguration.xsd">
+=======
+<!-- generated on 2024-12-08 20:01:53 by Eclipse SUMO sumo Version v1_21_0+0042-f4879189807
+<sumoConfiguration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/sumoConfiguration.xsd">
+>>>>>>> 081101712e71bc01fb761362066673e49f80a865
 
     <input>
         <net-file value="E:\WorkSpace\StudyAdroad\Gustave-eiffel course\RL course\Dynamic-Traffic-light-management-system-main\HWRamp\maps\HRC.net.xml"/>
@@ -10,7 +15,11 @@
     </input>
 
     <traci_server>
+<<<<<<< HEAD
         <remote-port value="51052"/>
+=======
+        <remote-port value="58890"/>
+>>>>>>> 081101712e71bc01fb761362066673e49f80a865
     </traci_server>
 
 </configuration>

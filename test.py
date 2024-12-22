@@ -73,7 +73,9 @@ def step(action):
         ### Optional: Dynamically adjust the flow ###
         env.setFlowOnHW(interpolate_flow(env.getCurrentStep(), data_points)[0])
         env.setFlowOnRamp(interpolate_flow(env.getCurrentStep(), data_points)[1])
+        
         env.doSimulationStep(action)
+        #print(f"--------------light status : {env.getTrafficLightState()}")
 
 def testModel(model, useModel=True):
     env.reset()
@@ -83,9 +85,13 @@ def testModel(model, useModel=True):
     while not isDone:
         mov += 1
         if useModel:
-            qval = model(state1)
-            qval_ = qval.data.numpy()
-            action_ = np.argmax(qval_)
+            qval= model(state1)
+            action_ = qval.item()
+            if action_ >0.5:
+                print(f"____________________Light proportions___________________: {action_}")
+            #qval = model(state1)
+            #qval_ = qval.data.numpy()
+            #action_ = np.argmax(qval_)
         else:
             action_ = 0
         step(action_)

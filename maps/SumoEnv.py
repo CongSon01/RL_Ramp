@@ -1,5 +1,10 @@
+#export SUMO_HOME="/Users/macos/sumo"
+#export PATH="/Users/macos/sumo/bin:$PATH"
+#export DYLD_LIBRARY_PATH="/usr/local/opt/xerces-c/lib:/Users/macos/sumo/bin:/usr/local/Cellar/xerces-c/3.3.0/lib:$DYLD_LIBRARY_P$
+
 import os
 import sys
+
 
 # Set path to SUMO Home
 if "SUMO_HOME" in os.environ:
@@ -258,9 +263,9 @@ class SumoEnv:
         max_duration = 60  # The set duration for each light phase in your configuration
 
         if current_phase == 1:  # Red phase
-            return remaining_duration / (2 * max_duration)
+            return 0.5+ remaining_duration / (2 * max_duration)
         else:  # Green phase
-            return 0.5 + (remaining_duration / (2 * max_duration))
+            return (remaining_duration / (2 * max_duration))
     
     # taking into account the length of the vehicles
     def getStateMatrixV2(self):

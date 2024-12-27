@@ -291,7 +291,7 @@ class SumoEnv:
                     if vehicleSpeed == 0:
                         stateMatrix[lane][int(lanePosition) - i] = 0.001  # Minimal value for stopped vehicles
                     else:
-                       stateMatrix[lane][int(lanePosition) - i] = vehicleSpeed / 48  # Normalize speed
+                       stateMatrix[lane][int(lanePosition) - i] = vehicleSpeed / 60  # Normalize speed
                 
                 else:
                     break
@@ -311,7 +311,7 @@ class SumoEnv:
                     if rampVehicleSpeed == 0:
                         stateMatrix[ramp_lane][int(rampLanePosition) - i] = 0.001  # Minimal value for stopped vehicles
                     else:
-                        stateMatrix[ramp_lane][int(rampLanePosition) - i] = rampVehicleSpeed / 48  # Normalize speed
+                        stateMatrix[ramp_lane][int(rampLanePosition) - i] = rampVehicleSpeed / 60  # Normalize speed
                        
                 else:
                     break

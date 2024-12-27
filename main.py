@@ -285,8 +285,8 @@ if __name__ == "__main__":
     # Creating a dictionary to save all results 
     results = { "agent": agent, "model": model, "total_step_loss": total_step_loss, "total_step_rewards": total_step_rewards, "epochs": epochs, "steps": steps, "simulationStepLength": simulationStepLength, "mu": mu, "omega": omega, "tau": tau, "batch_size": batch_size, "max_steps": max_steps, "learning_rate": learning_rate, "gamma": gamma, "eps_start": eps_start, "eps_min": eps_min, "eps_dec_factor": eps_dec_factor, "eps_dec_exp": eps_dec_exp, "sync_freq": sync_freq, "mem_size": mem_size } 
     # Saving the results to a file 
-    with open('training_results.pkl', 'wb') as file: 
+    with open('training_results_26.pkl', 'wb') as file: 
         pickle.dump(results, file) 
         print("Training results saved successfully.")
-    torch.save(model, 'Models/DynamicModel1.pth')
+    torch.save(model, 'Models/DynamicModel26.pth')
 

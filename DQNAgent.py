@@ -7,7 +7,7 @@ from collections import deque
 import copy
 import pickle
 from maps.SumoEnv import SumoEnv 
-
+import time
 class DqnAgent:
     def __init__(self, observation_space_n):
         self.observation_space_n = observation_space_n
@@ -89,9 +89,9 @@ class DqnAgent:
             hw_flow, ramp_flow = self._interpolate_traffic_flow(self.environment.getCurrentStep(), self.traffic_flow_data)
             self.environment.setFlowOnHW(hw_flow)
             self.environment.setFlowOnRamp(ramp_flow)
-            print(f"Light proportions: {action}")
+            # print(f"Light proportions: {action}")
             self.environment.doSimulationStep(action)
-            print(f"Traffic light status: {self.environment.getTrafficLightState()}")
+            # print(f"Traffic light status: {self.environment.getTrafficLightState()}")
 
     def reset_environment(self):
         """Reset the environment and state buffer."""
@@ -166,12 +166,15 @@ class DqnAgent:
         self.reset_environment()
         state = self.observe_state()
         is_done = False
+        start_time = time.time()
+        time_limit = 30 * 60  # 30 phút (1800 giây)
         while not is_done:
             q_value = model(state)
             action = np.argmax(q_value.data.numpy())
             self.perform_step(action)
             state = self.observe_state()
-
+            if time.time() - start_time > time_limit:
+                is_done = True
         self.environment.close()
         return self.environment.getStatistics()
 
@@ -204,4 +207,4 @@ if __name__ == "__main__":
     with open('training_results.pkl', 'wb') as file:
         pickle.dump(results, file)
         print("Training results saved successfully.")
-    torch.save(trained_model, 'Models/TrainedModel.pth')
+    torch.save(trained_model, 'Models/DQNModel.pth')

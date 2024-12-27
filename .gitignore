@@ -1,0 +1,7 @@
+# Ignore Python cache and virtual environments
+__pycache__/*
+
+# Ignore editor and IDE specific files
+.vscode/
+old_models/
+temp/

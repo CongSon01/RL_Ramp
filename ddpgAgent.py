@@ -10,7 +10,7 @@ import csv
 import matplotlib.pyplot as plt
 from maps.SumoEnv import SumoEnv
 
-class DdpAgent:
+class DDPGAgent:
     def __init__(self, observation_space_n):
         self.observation_space_n = observation_space_n
 
@@ -242,7 +242,7 @@ class DdpAgent:
 if __name__ == "__main__":
   
     # Train the agent and collect training data
-    agent = DdpAgent(observation_space_n=3012)
+    agent = DDPGAgent(observation_space_n=3012)
     actor_model, total_step_loss, total_step_actor_loss, total_step_rewards = agent.train()
   # Save training results and model
     results = {

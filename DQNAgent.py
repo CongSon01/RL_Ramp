@@ -10,9 +10,15 @@ from maps.SumoEnv import SumoEnv
 import time
 class DqnAgent:
     def __init__(self, observation_space_n):
+        """
+        Initialize the DQN Agent.
+        
+        Parameters:
+        observation_space_n (int): The size of the observation space, representing the input to the neural network.
+        """
         self.observation_space_n = observation_space_n
 
-        # Set the device      
+        # Set the computing device (MPS for Mac GPUs or CPU as fallback)
         device = "mps" if torch.backends.mps.is_available() else "cpu"
         print(f"Using device: {device}")
 

@@ -11,7 +11,7 @@ Cong-Son DUONG, Mohammed Adel Djelloul ABBOU, Francky RASATAHARISOA, Nikethan NI
 <div style="display: flex; justify-content: space-between;">
   <div style="text-align: center;">
     <img src="./report/No_control.gif" alt="Demo GIF" width="45%" />
-    <p>No_control</p>
+    <p>Fixed-Control</p>
   </div>
   <div style="text-align: center;">
     <img src="./report/D-DOC.gif" alt="Demo GIF" width="45%" />
@@ -54,7 +54,7 @@ The project is structured into the following files:
 - Adjust the `delay_probability` variable to increase the number of vehicles experiencing delayed information.
 
 > **Note:**  
-> In all testing scripts, you can set the `use_model` variable to `False` to experiment with the **No control** scenario. In this case, traffic lights are switched at fixed intervals of 30 seconds.
+> In all testing scripts, you can set the `use_model` variable to `False` to experiment with the **Fixed-Control** scenario. In this case, traffic lights are switched at fixed intervals of 30 seconds.
 
 ## Setup and Installation
 

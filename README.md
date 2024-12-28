@@ -14,12 +14,12 @@ The primary performance metrics—Traffic Flow, Average Speed, Density, and Trav
 
 ## Simulation in SUMO
 <!-- ![Demo GIF](./report/D-DOC.gif) -->
-<figure style="display:inline-block; width: 48%; margin: 0;">
+<figure style="display:inline-block; width: 20%; margin: 0;">
   <img src="./report/No_control.gif" alt="Demo GIF" style="width: 100%;">
   <figcaption style="text-align: center;">No_control</figcaption>
 </figure>
 
-<figure style="display:inline-block; width: 48%; margin: 0;">
+<figure style="display:inline-block; width: 20%; margin: 0;">
   <img src="./report/D-DOC.gif" alt="Demo GIF" style="width: 100%;">
   <figcaption style="text-align: center;">D-DOC</figcaption>
 </figure>

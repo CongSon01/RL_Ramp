@@ -318,14 +318,9 @@ class DDPGAgent:
 
 # Main script
 if __name__ == "__main__":
-<<<<<<< HEAD
   
     # Train the agent and collect training data
     agent = DDPGAgent(observation_space_n=3012)
-=======
-    """Train the agent and save training results and the trained actor model."""
-    agent = DdpAgent(observation_space_n=3012)
->>>>>>> e2e200d5523e0b425219b44397d4e0c829c6b5a1
     actor_model, total_step_loss, total_step_actor_loss, total_step_rewards = agent.train()
 
     # Save training results and model

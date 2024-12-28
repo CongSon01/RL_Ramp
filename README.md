@@ -13,6 +13,9 @@ The D-DOC approach adaptively learns optimal ramp metering rates that aim to red
 The primary performance metrics—Traffic Flow, Average Speed, Density, and Travel Time—are gathered to assess the quality of control. Comparisons are made against traditional control methods (e.g., fixed or pre-timed signals) as well as reinforcement learning approaches such as ε-Greedy and DQN. The results demonstrate that D-DOC effectively manages ramp inflows, maintaining higher flow rates, reducing congestion, and improving overall travel conditions despite the presence of delayed observations.
 
 ## Simulation in SUMO
+<!-- ![Demo GIF](./report/D-DOC.gif) -->
+<img src="./report/No_control.gif" alt="Demo GIF" width="48%" style="display:inline-block;"/>
+<img src="./report/D-DOC.gif" alt="Demo GIF" width="48%" style="display:inline-block;"/>
 
 This project uses the **SUMO** (Simulation of Urban MObility) environment to simulate traffic scenarios and evaluate the performance of the D-DOC framework. The simulation includes two main scenarios:
 1. **Constant Flow Scenario**: Traffic flows are static, representing a typical non-peak scenario.

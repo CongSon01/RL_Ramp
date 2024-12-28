@@ -5,7 +5,6 @@
 import os
 import sys
 
-
 # Set path to SUMO Home
 if "SUMO_HOME" in os.environ:
     tools = os.path.join(os.environ["SUMO_HOME"], "tools")
@@ -101,13 +100,6 @@ class SumoEnv:
         # Speed (mean)
         self.speedHW = traci.edge.getLastStepMeanSpeed("HW_Ramp")
         self.speedRamp = traci.edge.getLastStepMeanSpeed("Ramp_beforeTL")
-
-        # TravelTime (length/mean speed) OLD!!!
-        # self.travelTimeHW = traci.edge.getTraveltime("HW_beforeRamp") + traci.edge.getTraveltime("HW_Ramp") + traci.edge.getTraveltime("HW_afterRamp")
-        # self.travelTimeRamp =  traci.edge.getTraveltime("Ramp_beforeTL") + traci.edge.getTraveltime("Ramp_afterTL") + traci.edge.getTraveltime("HW_Ramp") + traci.edge.getTraveltime("HW_afterRamp")
-        # self.travelTimeSystem = self.travelTimeHW + traci.edge.getTraveltime("Ramp_beforeTL") + traci.edge.getTraveltime("Ramp_afterTL")
-
-        # Real TravelTime (arrival - depart) NEW!!!
 
         # Recording the vehicles that appear on the starting edges
         starting_vehicles_HW = set(traci.edge.getLastStepVehicleIDs("HW_beforeRamp"))
@@ -322,7 +314,38 @@ class SumoEnv:
         return stateMatrix
 
     def getStatistics(self):
-        return (self.steps, self.flow_steps, self.flows_HW, self.speeds_HW, self.densities_HW, self.travelTimes_HW, self.flows_Ramp, self.speeds_Ramp, self.densities_Ramp, self.travelTimes_Ramp, self.travelTimesSystem, self.trafficLightPhases)
+        return {self.steps, self.flow_steps, self.flows_HW, self.speeds_HW, self.densities_HW, self.travelTimes_HW, self.flows_Ramp, self.speeds_Ramp, self.densities_Ramp, self.travelTimes_Ramp, self.travelTimesSystem, self.trafficLightPhases}
+
+    def getStatistics(self):
+        """
+        Computes and returns average traffic statistics based on recorded simulation data.
+
+        Returns:
+            dict: A dictionary containing the average statistics for flows, speeds, densities,
+                travel times, and traffic light phases across the system.
+        """
+        # Average flow rates
+        combined_flow = [fhw + framp for fhw, framp in zip(self.flows_HW, self.flows_Ramp)]
+        avg_combined_flow = sum(combined_flow) / len(combined_flow) if combined_flow else 0
+
+        # Average speeds
+        combined_speed = [(shw + sramp) / 2 for shw, sramp in zip(self.speeds_HW, self.speeds_Ramp)]
+        avg_combined_speed = sum(combined_speed) / len(combined_speed) if combined_speed else 0
+
+        # Average densities
+        combined_density = [(dhw + dramp) / 2 for dhw, dramp in zip(self.densities_HW, self.densities_Ramp)]
+        avg_combined_density = sum(combined_density) / len(combined_density) if combined_density else 0
+
+        # Average travel times
+        avg_travelTime_System = sum(self.travelTimesSystem) / len(self.travelTimesSystem) if self.travelTimesSystem else 0
+
+        # Return a dictionary of statistics
+        return {
+            "flow": avg_combined_flow,
+            "speed": avg_combined_speed,
+            "density": avg_combined_density,
+            "tt": avg_travelTime_System,
+        }
 
     def close(self):
         traci.close()

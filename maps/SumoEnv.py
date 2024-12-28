@@ -28,7 +28,7 @@ class SumoEnv:
         current_dir = os.path.dirname(os.path.abspath(__file__))
 
         # Path to the SUMO configuration file (sumocfg)
-        sumocfg_path = os.path.join(current_dir, "HRC.sumocfg")
+        sumocfg_path = os.path.join(current_dir, "RLOC.sumocfg")
 
         self.sumoCmd = [sumoBinary, "-c", sumocfg_path]
 
@@ -267,7 +267,7 @@ class SumoEnv:
         #maxSpeed = 80  # Max speed for normalization
 
         # Create an array stateMatrix with zeros
-        stateMatrix = [[0 for _ in range(int(laneLength) + 1)] for _ in range(int(laneNumber) + 1)]
+        stateMatrix = [[-1 for _ in range(int(laneLength) + 1)] for _ in range(int(laneNumber) + 1)]
 
         # Reading out the vehicles on the road
         vehicleList = traci.edge.getLastStepVehicleIDs("HW_Ramp")
@@ -281,7 +281,7 @@ class SumoEnv:
             for i in range(int(vehicleLength)):
                 if int(lanePosition) - i >= 0:
                     if vehicleSpeed == 0:
-                        stateMatrix[lane][int(lanePosition) - i] = 0.001  # Minimal value for stopped vehicles
+                        stateMatrix[lane][int(lanePosition) - i] = 0  # Minimal value for stopped vehicles
                     else:
                        stateMatrix[lane][int(lanePosition) - i] = vehicleSpeed / 60  # Normalize speed
                 
@@ -301,7 +301,7 @@ class SumoEnv:
             for i in range(int(rampVehicleLength)):
                 if int(rampLanePosition) - i >= 0:
                     if rampVehicleSpeed == 0:
-                        stateMatrix[ramp_lane][int(rampLanePosition) - i] = 0.001  # Minimal value for stopped vehicles
+                        stateMatrix[ramp_lane][int(rampLanePosition) - i] = 0  # Minimal value for stopped vehicles
                     else:
                         stateMatrix[ramp_lane][int(rampLanePosition) - i] = rampVehicleSpeed / 60  # Normalize speed
                        

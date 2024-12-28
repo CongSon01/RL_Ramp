@@ -1,0 +1,8 @@
+torch==2.0.1       # PyTorch library for building and training deep learning models
+numpy==1.24.3      # Efficient mathematical and matrix operations
+sumolib==1.16.0    # Tools for working with SUMO configuration files
+traci==1.16.0      # Interface for Python to communicate with SUMO
+matplotlib==3.7.2  # Visualization library for plotting results and analysis
+pandas==2.0.3      # Data processing and analysis library
+scipy==1.11.1      # Mathematical functions and optimization algorithms
+gym==0.26.2        # Reinforcement learning environment library (if applicable)

@@ -2,48 +2,71 @@
 
 <net version="1.16" junctionCornerDetail="5" limitTurnSpeed="5.50" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/net_file.xsd">
 
+    <!-- Location and boundary parameters of the network -->
     <location netOffset="0.00,0.00" convBoundary="-1083.84,120.41,1100.00,200.01" origBoundary="-10000000000.00,-10000000000.00,10000000000.00,10000000000.00" projParameter="!"/>
 
+    <!-- Edge definition for E0 (first road section) -->
     <edge id="E0" from="J0" to="JH1" priority="-1">
-    <!-- truck speed limit 80km/h -->
+        <!-- Restricting trucks to a speed limit of 80 km/h (22.22 m/s) -->
         <restriction vClass="truck" speed="22.22"/>
+        <!-- Lane definitions for this edge with speed and length details -->
         <lane id="E0_0" index="0" speed="36.11" length="557.55" shape="-1083.84,195.21 -526.29,195.20"/>
         <lane id="E0_1" index="1" speed="36.11" length="557.55" shape="-1083.84,198.41 -526.29,198.40"/>
     </edge>
+
+    <!-- Edge definition for E1 (another road section) -->
     <edge id="E1" from="J1" to="JR1" priority="-1">
+        <!-- Lane for this edge with speed and length -->
         <lane id="E1_0" index="0" speed="19.44" length="308.88" shape="-274.39,118.91 34.49,118.81"/>
     </edge>
+
+    <!-- Edge for the ramp (HW_Ramp) between junctions JH2 and JH3 -->
     <edge id="HW_Ramp" from="JH2" to="JH3" priority="-1" length="250.00" shape="400.00,200.00 541.39,200.00 600.00,200.00">
-    <!-- truck speed limit 80km/h -->
+        <!-- Truck speed limit on this ramp -->
         <restriction vClass="truck" speed="22.22"/>
+        <!-- Lane definitions for the ramp -->
         <lane id="HW_Ramp_0" index="0" speed="36.11" length="250.00" shape="372.33,192.00 541.39,192.00 596.00,192.00"/>
         <lane id="HW_Ramp_1" index="1" speed="36.11" length="250.00" shape="372.33,195.20 541.39,195.20 596.00,195.20"/>
         <lane id="HW_Ramp_2" index="2" speed="36.11" length="250.00" shape="372.33,198.40 541.39,198.40 596.00,198.40"/>
     </edge>
+
+    <!-- Edge for the road after the ramp (HW_afterRamp) -->
     <edge id="HW_afterRamp" from="JH3" to="JH4" priority="-1">
-    <!-- truck speed limit 80km/h -->
+        <!-- Truck speed limit -->
         <restriction vClass="truck" speed="22.22"/>
+        <!-- Lane definitions for the road after the ramp -->
         <lane id="HW_afterRamp_0" index="0" speed="36.11" length="500.00" shape="604.00,195.20 1100.00,195.20"/>
         <lane id="HW_afterRamp_1" index="1" speed="36.11" length="500.00" shape="604.00,198.40 1100.00,198.40"/>
     </edge>
+
+    <!-- Edge for the road before the ramp (HW_beforeRamp) -->
     <edge id="HW_beforeRamp" from="JH1" to="JH2" priority="-1" length="500.00" shape="-526.29,200.00 -541.05,200.00 -465.35,200.00 -133.38,200.00 400.00,200.00">
-    <!-- truck speed limit 80km/h -->
+        <!-- Truck speed limit -->
         <restriction vClass="truck" speed="22.22"/>
+        <!-- Lane definitions for the road before the ramp -->
         <lane id="HW_beforeRamp_0" index="0" speed="36.11" length="500.00" shape="-526.29,195.20 -465.35,195.20 -133.38,195.20 368.99,195.20"/>
         <lane id="HW_beforeRamp_1" index="1" speed="36.11" length="500.00" shape="-526.29,198.40 -465.35,198.40 -133.38,198.40 368.99,198.40"/>
     </edge>
+
+    <!-- Edge for the ramp after the traffic light (Ramp_afterTL) -->
     <edge id="Ramp_afterTL" from="JRTL" to="JH2" priority="-1" type="Ramp" length="35.00" shape="348.81,188.90 400.00,200.00">
         <lane id="Ramp_afterTL_0" index="0" speed="19.44" length="35.00" shape="349.15,187.34 369.02,191.65"/>
     </edge>
+
+    <!-- Edge for the ramp before the traffic light (Ramp_beforeTL) -->
     <edge id="Ramp_beforeTL" from="JR1" to="JRTL" priority="-1" type="Ramp" length="250.00">
         <lane id="Ramp_beforeTL_0" index="0" speed="19.44" length="250.00" shape="34.83,118.85 349.05,187.24"/>
     </edge>
 
+    <!-- Traffic light logic for the junction with the traffic light (JRTL1) -->
     <tlLogic id="JRTL1" type="static" programID="0" offset="0">
+        <!-- Phase 1: Green light duration of 60 seconds -->
         <phase duration="60" state="G"/>
+        <!-- Phase 2: Red light duration of 60 seconds -->
         <phase duration="60" state="r"/>
     </tlLogic>
 
+    <!-- Junction definitions -->
     <junction id="J0" type="dead_end" x="-1083.84" y="200.01" incLanes="" intLanes="" shape="-1083.84,200.01 -1083.84,193.61"/>
     <junction id="J1" type="dead_end" x="-274.39" y="120.51" incLanes="" intLanes="" shape="-274.39,120.51 -274.39,117.31"/>
     <junction id="JH1" type="priority" x="-526.29" y="200.00" incLanes="E0_0 E0_1" intLanes="" shape="-526.29,200.00 -526.29,193.60 -526.29,200.00">
@@ -60,21 +83,6 @@
         <request index="1" response="00" foes="00"/>
     </junction>
     <junction id="JH4" type="dead_end" x="1100.00" y="200.00" incLanes="HW_afterRamp_0 HW_afterRamp_1" intLanes="" shape="1100.00,193.60 1100.00,200.00"/>
-    <junction id="JR1" type="priority" x="34.49" y="120.41" incLanes="E1_0" intLanes="" shape="34.49,120.41 35.17,117.28 34.92,117.23 34.83,117.22 34.74,117.21 34.64,117.21 34.49,117.21">
-        <request index="0" response="0" foes="0"/>
-    </junction>
-    <junction id="JRTL" type="traffic_light" x="348.71" y="188.80" incLanes="Ramp_beforeTL_0" intLanes="" shape="348.90,188.92 349.58,185.79 349.47,185.75 349.41,185.70 349.36,185.67 348.62,188.78 348.73,188.82 348.79,188.88 348.84,188.90">
-        <request index="0" response="0" foes="0"/>
-    </junction>
-
-    <connection from="E0" to="HW_beforeRamp" fromLane="0" toLane="0" dir="t" state="M"/>
-    <connection from="E0" to="HW_beforeRamp" fromLane="1" toLane="1" dir="t" state="M"/>
-    <connection from="E1" to="Ramp_beforeTL" fromLane="0" toLane="0" dir="s" state="M"/>
-    <connection from="HW_Ramp" to="HW_afterRamp" fromLane="1" toLane="0" dir="s" state="M"/>
-    <connection from="HW_Ramp" to="HW_afterRamp" fromLane="2" toLane="1" dir="s" state="M"/>
-    <connection from="HW_beforeRamp" to="HW_Ramp" fromLane="0" toLane="1" dir="s" state="M"/>
-    <connection from="HW_beforeRamp" to="HW_Ramp" fromLane="1" toLane="2" dir="s" state="M"/>
-    <connection from="Ramp_afterTL" to="HW_Ramp" fromLane="0" toLane="0" dir="s" state="M"/>
-    <connection from="Ramp_beforeTL" to="Ramp_afterTL" fromLane="0" toLane="0" tl="JRTL1" linkIndex="0" dir="s" state="O"/>
-
+    <junction id="JR1" type="priority" x="34.49" y="120.41" incLanes="E1_0" intLanes="" shape="34.49,120.41 35.17,117.28 34.92,117.23 34.83,117.22 34.74,117.21 34.64,117.21 34.49,117.21"/>
+    <junction id="JRTL" type="traffic_light" x="348.71" y="188.80" incLanes="Ramp_beforeTL_0" intLanes="Ramp_afterTL_0" shape="349.15,187.34 349.29,187.61 349.31,188.01 348.81,188.92 348.71,188.80"/>
 </net>

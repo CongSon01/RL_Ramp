@@ -164,26 +164,6 @@ class DqnAgent:
         loss.backward()
         self.optimizer.step()
 
-    def test_agent(self, model, gui=True):
-        """Test the trained model in the environment."""
-        if gui:
-            self.environment.close()
-            self.environment = SumoEnv(gui=True, flow_on_HW=self.highway_flow, flow_on_Ramp=self.ramp_flow)
-        self.reset_environment()
-        state = self.observe_state()
-        is_done = False
-        start_time = time.time()
-        time_limit = 30 * 60  # 30 phút (1800 giây)
-        while not is_done:
-            q_value = model(state)
-            action = np.argmax(q_value.data.numpy())
-            self.perform_step(action)
-            state = self.observe_state()
-            if time.time() - start_time > time_limit:
-                is_done = True
-        self.environment.close()
-        return self.environment.getStatistics()
-
     def _update_epsilon(self, current_epoch):
         """Update epsilon value for exploration-exploitation balance."""
         if self.eps_decay_exponential:

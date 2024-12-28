@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/routes_file.xsd">
+  
+    <!-- VTypes: Define the types of vehicles in the simulation -->
+    <vType id="car"  probability="0.9"/> <!-- Car with a probability of 90% -->
+    <vType id="truck" vClass="truck" maxSpeed="27.77" probability="0.1"/> <!-- Truck with a maximum speed of 27.77 m/s and a probability of 10% -->
+    <vTypeDistribution id="car_truck" vTypes="car truck"/> <!-- A distribution that defines the presence of car and truck types -->
+
+    <!-- Routes: Define the paths that vehicles will take -->
+    <route id="r_Highway" edges="E0 HW_beforeRamp HW_Ramp HW_afterRamp"/> <!-- A route starting at E0, passing through HW_beforeRamp, HW_Ramp, and ending at HW_afterRamp -->
+    <route id="r_Ramp" edges="E1 Ramp_beforeTL Ramp_afterTL HW_Ramp HW_afterRamp"/> <!-- A route starting at E1, passing through Ramp_beforeTL, Ramp_afterTL, and ending at HW_afterRamp -->
+ 
+    <!-- Flows: Define the flow of vehicles along routes (currently commented out) -->
+    <!--
+    <flow id="f_Highway" begin="0.00" route="r_Highway" end="3600.00" departLane="free" departPos="free" departSpeed="speedLimit" vehsPerHour="10000" type="car_truck"/>
+    <flow id="r_Ramp" begin="0.00" route="r_Ramp" end="3600.00" departPos="free" departSpeed="speedLimit" vehsPerHour="3300" type="car_truck"/>
+    -->
+</routes>

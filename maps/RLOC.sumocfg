@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/sumoConfiguration.xsd">
+
+    <input>
+        <net-file value="RLOC.net.xml"/> <!-- The network file describing the road network -->
+        <route-files value="RLOC.rou.xml"/> <!-- The route file containing vehicle route definitions -->
+        <additional-files value="RLOC.add.xml"/> <!-- Additional file containing any extra information (e.g., traffic lights, pedestrians, etc.) -->
+    </input>
+
+</configuration>

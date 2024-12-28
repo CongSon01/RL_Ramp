@@ -5,3 +5,4 @@ __pycache__/*
 .vscode/
 old_models/
 temp/
+trained_models/

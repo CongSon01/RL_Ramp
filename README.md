@@ -14,16 +14,16 @@ The primary performance metrics—Traffic Flow, Average Speed, Density, and Trav
 
 ## Simulation in SUMO
 <!-- ![Demo GIF](./report/D-DOC.gif) -->
-<figure style="display:inline-block; width: 20%; margin: 0;">
-  <img src="./report/No_control.gif" alt="Demo GIF" style="width: 100%;">
-  <figcaption style="text-align: center;">No_control</figcaption>
-</figure>
-
-<figure style="display:inline-block; width: 20%; margin: 0;">
-  <img src="./report/D-DOC.gif" alt="Demo GIF" style="width: 100%;">
-  <figcaption style="text-align: center;">D-DOC</figcaption>
-</figure>
-
+<div style="display: flex; justify-content: space-between;">
+  <div style="text-align: center;">
+    <img src="./report/No_control.gif" alt="Demo GIF" width="48%" />
+    <p>No_control</p>
+  </div>
+  <div style="text-align: center;">
+    <img src="./report/D-DOC.gif" alt="Demo GIF" width="48%" />
+    <p>D-DOC</p>
+  </div>
+</div>
 
 This project uses the **SUMO** (Simulation of Urban MObility) environment to simulate traffic scenarios and evaluate the performance of the D-DOC framework. The simulation includes two main scenarios:
 1. **Constant Flow Scenario**: Traffic flows are static, representing a typical non-peak scenario.

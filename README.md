@@ -6,6 +6,8 @@ Cong-Son DUONG, Mohammed Adel Djelloul ABBOU, Francky RASATAHARISOA, Nikethan NI
 
 **Report:**  [Final Report](https://heyzine.com/flip-book/59e53eabc9.html)
 
+**Source Code:**  [Source Code](https://github.com/CongSon01/RL_Ramp)
+
 **Demo:** 
 
 <div style="display: flex; justify-content: space-between;">
@@ -21,11 +23,10 @@ Cong-Son DUONG, Mohammed Adel Djelloul ABBOU, Francky RASATAHARISOA, Nikethan NI
 
 ## Introduction
 
-Ramp metering is a crucial technique for managing traffic flow and minimizing congestion by regulating the rate at which vehicles enter a highway. However, practical ramp-metering systems often encounter challenges such as delayed sensor data and the need for continuous control signals. To address these challenges, we propose **D-DOC**, a Deep Deterministic Policy Gradient (DDPG)-based reinforcement learning framework specifically designed for ramp-metering control under both delayed state information and continuous action spaces.
+Ramp metering is an effective strategy to reduce traffic congestion by controlling the rate
+of vehicles entering the highway. However, practical ramp-metering systems often face challenges such as delayed sensor data and the need for continuous control signals. To address these challenges, we propose **D-DOC**, a DDPG-based Reinforcement Learning framework specifically designed for ramp metering control in both delayed state information and continuous action spaces. Leveraging Deep Deterministic Policy Gradient, our approach adaptively learns optimal metering rates that minimize congestion on the ramp and maximize traffic flow on the highway.
 
-The D-DOC approach adaptively learns optimal ramp metering rates that aim to reduce congestion on the ramp and maximize throughput on the highway freeway. This method is implemented and tested in the **SUMO** simulation environment, evaluating performance in two key scenarios: a constant flow scenario and a dynamic peak hour scenario.
-
-The primary performance metrics—Traffic Flow, Average Speed, Density, and Travel Time—are gathered to assess the quality of control. Comparisons are made against traditional control methods (e.g., fixed or pre-timed signals) as well as reinforcement learning approaches such as ε-Greedy and DQN. The results demonstrate that D-DOC effectively manages ramp inflows, maintaining higher flow rates, reducing congestion, and improving overall travel conditions despite the presence of delayed observations.
+We have implemented the proposed method in the SUMO simulation environment and evaluated performance across two contrasting scenarios: (1) a constant scenario with static flows, and (2) a dynamic scenario exhibiting peak hours from 8:15 to 8:45. Comparisons are made against a Fixed-Control approach (fixed or pre-timed signals) as well as RL (Reinforcement Learning) methods with decision-making strategies (e.g., E-Greedy, Double-DQN). Our results show that D-DOC effectively manages ramp inflows despite observation delays, maintaining higher flow rates, reducing congestion, and improving overall travel conditions. This study thus demonstrates the practicality and benefits of a DDPG-driven policy for real-time ramp metering under uncertain and continuous-control requirements.
 
 ## Simulation in SUMO
 

@@ -4,7 +4,8 @@ Cong-Son DUONG, Mohammed Adel Djelloul ABBOU, Francky RASATAHARISOA, Nikethan NI
 
 **Supervisor:** Nadir FARHI, HDR, Researcher
 
-**Report:**  [Final Report](https://heyzine.com/flip-book/59e53eabc9.html)
+**Report:**  [Final Report](https://heyzine.com/flip-book/f64df9886d.html)
+<iframe allowfullscreen="" scrolling="no" class="fp-iframe" style="border: 1px solid lightgray; width: 100%; height: 400px;" src="https://heyzine.com/flip-book/f64df9886d.html"></iframe>
 
 **Source Code:**  [Source Code](https://github.com/CongSon01/RL_Ramp)
 
